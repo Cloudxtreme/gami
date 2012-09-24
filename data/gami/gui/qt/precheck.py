@@ -32,17 +32,67 @@ class GUIInterface(gami.gui.qt.GamiQT):
     def build(self):
         label = QLabel(self.var("description"))
         label.setWordWrap(True)
+        label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         label.setSizePolicy(sizePolicy)
 
+        ### Grid layout
+        grid = QGridLayout()
+        grid.setHorizontalSpacing(0)
+        grid.setSizeConstraint(QLayout.SetMaximumSize)
+        gridWidget = QWidget()
+        gridWidget.setLayout(grid)
+
+        ### Network task
+        #icon = QIcon().fromTheme("dialog-error")
+        self.ntaskImage = QLabel(" ")
+        self.ntaskImage.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        self.ntaskImage.setPixmap(QIcon().fromTheme("task-recurring").pixmap(50))
+        self.ntask = QLabel(self.var("wait"))
+
+        ### Harddisk task
+        #icon = QIcon().fromTheme("dialog-error")
+        self.htaskImage = QLabel(" ")
+        self.htaskImage.setPixmap(QIcon().fromTheme("task-recurring").pixmap(50))
+        self.htask = QLabel(self.var("wait"))
+
+
         self.content = QVBoxLayout()
-        self.content.setSizeConstraint(QLayout.SetMaximumSize)
         self.content.addWidget(label, Qt.AlignTop)
+        self.content.addWidget(gridWidget, Qt.AlignTop)
+        self.content.setSizeConstraint(QLayout.SetMinimumSize)
+        grid.addWidget(self.ntaskImage, 1, 1, 1, 1)
+        grid.addWidget(self.ntask, 1, 2, 1, 3)
+        grid.addWidget(self.htaskImage, 2, 1, 4, 1)
+        grid.addWidget(self.htask, 2, 2, 4, 1)
+
+        #self.content.addWidget(image_label, Qt.AlignTop)
         #self.content.addItem(QSpacerItem(10, 50, QSizePolicy.Expanding, QSizePolicy.Minimum))
         #self.app.Content.setStyleSheet("text-align: top; background-color: red;")
+
+    def setHarddriveTask(self, value):
+        """ Set harddrive status """
+
+        if value == True:
+            self.htask.setText(self.var("test.hd.space.passed"))
+            self.htaskImage.setPixmap(QIcon().fromTheme("task-accepted").pixmap(50))
+        else:
+            self.htask.setText(self.var("test.hd.space.failed"))
+            self.htaskImage.setPixmap(QIcon().fromTheme("dialog-error").pixmap(50))
+
+    def setInternetTask(self, value):
+        """ Set internet connection status """
+
+        if value == True:
+            self.ntask.setText(self.var("test.net.passed"))
+            self.ntaskImage.setPixmap(QIcon().fromTheme("task-accepted").pixmap(50))
+        else:
+            self.ntask.setText(self.var("test.net.failed"))
+            self.ntaskImage.setPixmap(QIcon().fromTheme("dialog-error").pixmap(50))
+            
 
     def display(self):
         self.build()

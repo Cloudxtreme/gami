@@ -31,6 +31,7 @@ class GUIInterface(gami.gui.qt.GamiQT):
 
     def build(self):
         label = QLabel(self.var("welcome_label"))
+        label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         label.setWordWrap(True)
 
         sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Maximum)

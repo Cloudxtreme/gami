@@ -19,10 +19,18 @@ import gami.core
 
 class GamiStep(gami.core.GamiStepTemplate):
     def initialize(self):
-        self.view.var("description", u"W tym kroku zostanie sprawdzione połączenie z internetem oraz ilość dostępnego miejsca na dysku twardym.")
-        print("View:")
-        print self.view
+        self.view.var("description", u"W tym kroku zostanie sprawdzione <b>połączenie z internetem</b> oraz ilość dostępnego miejsca na dysku twardym.<br/><br/><b>Wymagana ilość miejsca:</b> 5 GiB + opcjonalnie 0,5-2 GiB dla pamięci SWAP")
+
+        self.view.var("test.net.passed", u"Komputer jest podłączony do internetu")
+        self.view.var("test.net.failed", u"Brak połączenia z internetem")
+
+        self.view.var("test.hd.space.passed", u"Na komputerze jest wystarczająca ilość wolnego miejsca")
+        self.view.var("test.hd.space.failed", u"Brak wolnego miejsca na dysku twardym")
+        self.view.var("wait", u"Wczytywanie danych...")
         self.view.display()
+
+        self.view.setHarddriveTask(True)
+        self.view.setInternetTask(False)
 
     def reload(self):
         self.view.display()

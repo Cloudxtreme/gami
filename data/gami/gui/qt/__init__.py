@@ -27,6 +27,14 @@ class GamiQT:
 
     template = dict()
 
+    def QLabelImage(self, img):
+        icon = QImage()
+        icon.load(img)
+        image_label = QLabel(" ")
+        image_label.setPixmap(QPixmap.fromImage(icon))
+
+        return image_label
+
     def var(self, variable, value=None):
         """ Store template values 
             var("test", "any value") # set "test" value to "any value"
