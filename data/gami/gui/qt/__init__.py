@@ -61,6 +61,13 @@ class GUIInterface:
     app = None
     layouts = {'welcome': ''}
 
+    def nextButtonState(self, isEnabled):
+        if isEnabled == True:
+            self.btnNext.setEnabled(True)
+        else:
+            self.btnNext.setEnabled(False)
+            self.btnNext.setText("Check")
+
     def __init__(self, GamiObject):
         """ Create initial window to put contents of installer to (layout) """
 
@@ -122,11 +129,11 @@ class GUIInterface:
         HBoxLayout.setMargin(0)
 
         buttonBack = QPushButton("Wstecz")
-        buttonNext = QPushButton("Dalej")
+        self.btnNext = QPushButton("Dalej")
 
         # Signals
         self.window.connect(buttonBack, SIGNAL("clicked()"), self.Gami.previousStep)
-        self.window.connect(buttonNext, SIGNAL("clicked()"), self.Gami.nextStep)
+        self.window.connect(self.btnNext, SIGNAL("clicked()"), self.Gami.nextStep)
 
         self.Gami.Hooking.connectHook("Gami.previousStep", self.buttonPrevious)
         self.Gami.Hooking.connectHook("Gami.nextStep", self.buttonNext)
@@ -138,13 +145,13 @@ class GUIInterface:
         buttonBack.setDisabled(True)
 
         #buttonNext.setMinimumWidth(50)
-        buttonNext.setMaximumWidth(100)
-        buttonNext.setMinimumWidth(90)
-        buttonNext.setMinimumHeight(45)
+        self.btnNext.setMaximumWidth(100)
+        self.btnNext.setMinimumWidth(90)
+        self.btnNext.setMinimumHeight(45)
 
 
         HBoxLayout.addWidget(buttonBack, 1, alignment=Qt.Alignment(2))
-        HBoxLayout.addWidget(buttonNext, 0, alignment=Qt.Alignment(2))
+        HBoxLayout.addWidget(self.btnNext, 0, alignment=Qt.Alignment(2))
         HBox.setLayout(HBoxLayout)
         HBox.setStyleSheet("margin: 4px;")
 

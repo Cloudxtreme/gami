@@ -59,6 +59,12 @@ class GUIInterface(gami.gui.qt.GamiQT):
         self.htaskImage.setPixmap(QIcon().fromTheme("task-recurring").pixmap(50))
         self.htask = QLabel(self.var("wait"))
 
+        ### Root check task
+        #icon = QIcon().fromTheme("dialog-error")
+        self.rtaskImage = QLabel(" ")
+        self.rtaskImage.setPixmap(QIcon().fromTheme("task-recurring").pixmap(50))
+        self.rtask = QLabel(self.var("wait"))
+
 
         self.content = QVBoxLayout()
         self.content.addWidget(label, Qt.AlignTop)
@@ -66,8 +72,14 @@ class GUIInterface(gami.gui.qt.GamiQT):
         self.content.setSizeConstraint(QLayout.SetMinimumSize)
         grid.addWidget(self.ntaskImage, 1, 1, 1, 1)
         grid.addWidget(self.ntask, 1, 2, 1, 3)
-        grid.addWidget(self.htaskImage, 2, 1, 4, 1)
-        grid.addWidget(self.htask, 2, 2, 4, 1)
+
+        # Check if there is enought space on hard disk
+        grid.addWidget(self.htaskImage, 2, 1, 1, 1)
+        grid.addWidget(self.htask, 2, 2, 1, 3)
+
+        # Check if user is root
+        grid.addWidget(self.rtaskImage, 3, 1, 1, Qt.AlignLeft)
+        grid.addWidget(self.rtask, 3, 2, 4, Qt.AlignLeft)
 
         #self.content.addWidget(image_label, Qt.AlignTop)
         #self.content.addItem(QSpacerItem(10, 50, QSizePolicy.Expanding, QSizePolicy.Minimum))
@@ -92,6 +104,16 @@ class GUIInterface(gami.gui.qt.GamiQT):
         else:
             self.ntask.setText(self.var("test.net.failed"))
             self.ntaskImage.setPixmap(QIcon().fromTheme("dialog-error").pixmap(50))
+
+    def setRootTask(self, value):
+        """ Set internet connection status """
+
+        if value == True:
+            self.rtask.setText(self.var("test.root.passed"))
+            self.rtaskImage.setPixmap(QIcon().fromTheme("task-accepted").pixmap(50))
+        else:
+            self.rtask.setText(self.var("test.root.failed"))
+            self.rtaskImage.setPixmap(QIcon().fromTheme("dialog-error").pixmap(50))
             
 
     def display(self):

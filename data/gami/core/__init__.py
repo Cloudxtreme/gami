@@ -19,6 +19,7 @@ import os, sys, gettext
 import gami
 from gami.core.utils import *
 from gami.core.storage import *
+from gami.core.partman import *
 
 if sys.version_info[0] >= 3:
     import configparser
@@ -39,6 +40,7 @@ class Gami:
     Storage = None
     Gui = None
 
+
     def __init__(self, args=''):
         # args will be parsed to determinate to load sqlite3 base or create new and put it in to memory
         # ...blah blah blah...
@@ -48,6 +50,7 @@ class Gami:
         self.Logging = Logging(self)
         self.Hooking = Hooking(self)
         self.Storage = Storage()
+        self.Partman = Partman()
         self.corePath = gami.core.__path__[0]
 
         #print("Testing storage:")
@@ -55,6 +58,9 @@ class Gami:
         #print self.Storage.get('stage')
         #self.Storage.set('stage', '2')
         #print self.Storage.get('stage')
+
+        # Default test configuration
+        self.Storage.set("required_space", "6000") # in mbytes
 
         self.Hooking.connectHook("Gami.initStep", self.initStep)
 
